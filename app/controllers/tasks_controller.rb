@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   def index
-    # Index
+    @tasks = Task.all
   end
 
   def show
@@ -8,14 +8,25 @@ class TasksController < ApplicationController
   end
 
   def new
-    # new
+    @tasks = Task.new
   end
 
   def create
-    # create
+    @task = Task.new(task_params)
+    redirect_to action: 'index'
+
+    if @task.save
+      redirect_to action: 'index'
+    else
+      render :new
+    end
   end
 
   def destroy
     # destroy
+  end
+
+  def task_params
+    params.require(:task).permit(:content, :is_done)
   end
 end
